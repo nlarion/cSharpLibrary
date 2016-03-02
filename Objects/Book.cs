@@ -30,7 +30,6 @@ namespace Library
       {
         Book newBook = (Book) otherBook;
         bool idEquality = this.GetId() == newBook.GetId();
-        // bool authorsEquality = this.GetAuthors() == newBook.GetAuthor();
         bool titleEquality = this.GetTitle() == newBook.GetTitle();
         bool dueDateEquality = this.GetDueDate() == newBook.GetDueDate();
         return (idEquality && titleEquality && dueDateEquality);
@@ -85,6 +84,43 @@ namespace Library
       {
         conn.Close();
       }
+    }
+
+    public static Book Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE id = @BookId;", conn);
+
+      SqlParameter BookIdParameter = new SqlParameter();
+      BookIdParameter.ParameterName = "@BookId";
+      BookIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(BookIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundBookId = 0;
+      string foundBookTitle = null;
+      DateTime foundBookDueDate = new DateTime(1999,01,01);
+
+      while(rdr.Read())
+      {
+        foundBookId = rdr.GetInt32(0);
+        foundBookTitle = rdr.GetString(1);
+        foundBookDueDate = rdr.GetDateTime(2);
+      }
+      Book foundBook = new Book(foundBookTitle, foundBookDueDate, foundBookId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundBook;
     }
 
     public List<Author> GetAuthors()
@@ -189,6 +225,36 @@ namespace Library
         conn.Close();
       }
     }
+
+    public void Update(string title, DateTime dueDate)
+     {
+       SqlConnection conn = DB.Connection();
+       conn.Open();
+
+       SqlCommand cmd = new SqlCommand("update books set title=@NewTitle, duedate=@NewDueDate where id = @BookId;", conn);
+
+       SqlParameter newTitleParameter = new SqlParameter();
+       newTitleParameter.ParameterName = "@NewTitle";
+       newTitleParameter.Value = title;
+       cmd.Parameters.Add(newTitleParameter);
+
+       SqlParameter newDueDateParameter = new SqlParameter();
+       newDueDateParameter.ParameterName = "@NewDueDate";
+       newDueDateParameter.Value = dueDate;
+       cmd.Parameters.Add(newDueDateParameter);
+
+       SqlParameter bookIdParameter = new SqlParameter();
+       bookIdParameter.ParameterName = "@BookId";
+       bookIdParameter.Value = this._id;
+       cmd.Parameters.Add(bookIdParameter);
+
+       cmd.ExecuteNonQuery();
+
+       if (conn != null)
+       {
+         conn.Close();
+       }
+     }
 
     public static void DeleteAll()
     {

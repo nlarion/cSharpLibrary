@@ -100,23 +100,50 @@ namespace Library
       Assert.Equal(testList, savedAuthors);
     }
 
-    // [Fact]
-    // public
+    [Fact]
+    public void Test_Update_UpdatesABookObject()
+    {
+      Book testBook = new Book("Glow in the Dark", new DateTime(2016, 01, 01));
+      testBook.Save();
 
+      testBook.Update("Glow in the Dark", new DateTime(2016,05,01));
 
+      Book afterBook = Book.Find(testBook.GetId());
 
-    // [Fact]
-    // public void Test_Returns_AuthorsNamesFromBookId()
-    // {
-    //   Author testAuthor = new Author("Ken Kesey", 1);
-    //   Author testAuthor2 = new Author("Cindy Crawford". 2);
-    //   List<Author> listAuthor = new List<Author>{testAuthor, testAuthor2};
-    //
-    //
-    //
-    //
-    //   List<Author> dummyList =
-    // }
+      Assert.Equal(afterBook.GetTitle(), "Glow in the Dark");
+      Assert.Equal(afterBook.GetDueDate(), new DateTime(2016,05,01));
+    }
+
+    [Fact]
+    public void Test_Update_UpdatesABookObjectInDB()
+    {
+      Book testBook = new Book("Glow in the Dark", new DateTime(2016,01,01), 1);
+      testBook.Save();
+
+      testBook.Update("Glow in the Dark", new DateTime(2016,05,01));
+
+      Book afterBook = Book.Find(testBook.GetId());
+
+      Book testBook2 = new Book("Glow in the Dark", new DateTime(2016,05,01), testBook.GetId());
+      // Console.WriteLine(afterBook.GetId());
+      // Console.WriteLine(testBook2.GetId());
+      Assert.Equal(afterBook, testBook2);
+    }
+
+    [Fact]
+    public void Test_Find_FindsBookInDB()
+    {
+      //Arrange
+      Book testBook = new Book("1984", new DateTime(1999,01,01), 1);
+      testBook.Save();
+
+      //Act
+      Book foundBook = Book.Find(testBook.GetId());
+
+      //Assert
+      Assert.Equal(testBook, foundBook);
+    }
+
 
     [Fact]
     public void Dispose()
