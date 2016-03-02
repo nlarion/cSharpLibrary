@@ -105,6 +105,40 @@ namespace Library
       return allBooks;
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO books (title, duedate) OUTPUT INSERTED.id VALUES (@BookTitle, @DueDate );", conn);
+
+      SqlParameter titleParameter = new SqlParameter();
+      titleParameter.ParameterName = "@BookTitle";
+      titleParameter.Value = this.GetTitle();
+      cmd.Parameters.Add(titleParameter);
+
+      SqlParameter dueDateParameter = new SqlParameter();
+      dueDateParameter.ParameterName = "@DueDate";
+      dueDateParameter.Value = this.GetDueDate();
+      cmd.Parameters.Add(dueDateParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

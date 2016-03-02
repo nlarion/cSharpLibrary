@@ -35,6 +35,21 @@ namespace Library
     }
 
     [Fact]
+    public void Test_Save_SavesAuthorToDatabase()
+    {
+      //Arrange
+      Author testAuthor = new Author("George Orwell", 1);
+      testAuthor.Save();
+
+      //Act
+      List<Author> result = Author.GetAll();
+      List<Author> testList = new List<Author>{testAuthor};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
     public void Dispose()
     {
       Author.DeleteAll();

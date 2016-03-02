@@ -37,6 +37,69 @@ namespace Library
       Assert.Equal(testBook, secondBook);
     }
 
+    [Fact]
+    public void Test_Save_SavesBooksToDatabase()
+    {
+      //Arrange
+      Book testBook = new Book("1984", new DateTime(2016,11,01), 1);
+      testBook.Save();
+
+      //Act
+      List<Book> result = Book.GetAll();
+      List<Book> testList = new List<Book>{testBook};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+
+
+    // [Fact]
+    // public void Test_AddBook_AddsBookToAuthor()
+    // {
+    //   //Arrange
+    //   Author testAuthor = new Author("Cindy Crawford", 1);
+    //   testAuthor.Save();
+    //
+    //   Book firstBook = new Book("My Journey", new DateTime(2016, 11, 01));
+    //   firstBook.Save();
+    //
+    //   Book secondBook = new Book("1984", new DateTime(2016, 11, 01));
+    //   secondBook.Save();
+    //
+    //   //Act
+    //   testAuthor.AddBook(firstBook);
+    //   testAuthor.AddBook(secondBook);
+    //
+    //   List<Book> result = testAuthor.GetBooks();
+    //   List<Book> testList = new List<Book>{firstBook, secondBook};
+    //
+    //   //Assert
+    //   Assert.Equal(testList, result);
+    // }
+    //
+    // [Fact]
+    // public void Test_GetBooks_ReturnsAllAuthorBooks()
+    // {
+    //   //Arrange
+    //   Course testCourse = new Course("Science", 101);
+    //   testCourse.Save();
+    //
+    //   Book firstBook = new Book("Magic Johnson", new DateTime(2016, 01, 01));
+    //   firstBook.Save();
+    //
+    //   Book secondBook = new Book("Magic James", new DateTime(2016, 01, 01));
+    //   secondBook.Save();
+    //
+    //   //Act
+    //   testCourse.AddBook(firstBook);
+    //   List<Book> savedBooks = testCourse.GetBooks();
+    //   List<Book> testList = new List<Book> {firstBook};
+    //
+    //   //Assert
+    //   Assert.Equal(testList, savedBooks);
+    // }
+
 
 
     // [Fact]
