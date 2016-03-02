@@ -75,5 +75,13 @@ namespace Library
 
     return allAuthors;
     }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM authors;", conn);
+      cmd.ExecuteNonQuery();
+    }
   }
 }

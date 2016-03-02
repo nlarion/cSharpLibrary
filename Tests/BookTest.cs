@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 
 namespace Library
 {
-  public class BookTest
+  public class BookTest : IDisposable
   {
-    public void TheBookTest()
+    public BookTest()
     {
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=library_test;Integrated Security=SSPI;";
     }
@@ -37,6 +37,8 @@ namespace Library
       Assert.Equal(testBook, secondBook);
     }
 
+
+
     // [Fact]
     // public void Test_Returns_AuthorsNamesFromBookId()
     // {
@@ -49,6 +51,13 @@ namespace Library
     //
     //   List<Author> dummyList =
     // }
+
+    [Fact]
+    public void Dispose()
+    {
+      Book.DeleteAll();
+      Author.DeleteAll();
+    }
 
   }
 }

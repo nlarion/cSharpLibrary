@@ -104,5 +104,13 @@ namespace Library
 
       return allBooks;
     }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM books;", conn);
+      cmd.ExecuteNonQuery();
+    }
   }
 }

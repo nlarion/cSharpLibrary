@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace Library
 {
-  public class AuthorTest
+  public class AuthorTest : IDisposable
   {
     public void CourseTest()
     {
@@ -32,6 +32,13 @@ namespace Library
 
       //Assert
       Assert.Equal(testAuthor, secondAuthor);
+    }
+
+    [Fact]
+    public void Dispose()
+    {
+      Author.DeleteAll();
+      Book.DeleteAll();
     }
 
   }
