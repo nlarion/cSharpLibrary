@@ -61,31 +61,6 @@ namespace Library
       _dueDate = dueDate;
     }
 
-    public void AddAuthor(Author newAuthor)
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("INSERT INTO book_authors (author_id, book_id) VALUES (@AuthorId, @BookId);", conn);
-
-      SqlParameter authorIdParameter = new SqlParameter();
-      authorIdParameter.ParameterName = "@BookId";
-      authorIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(authorIdParameter);
-
-      SqlParameter studentIdParameter = new SqlParameter();
-      studentIdParameter.ParameterName = "@AuthorId";
-      studentIdParameter.Value = newAuthor.GetId();
-      cmd.Parameters.Add(studentIdParameter);
-
-      cmd.ExecuteNonQuery();
-
-      if (conn != null)
-      {
-        conn.Close();
-      }
-    }
-
     public static Book Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -121,6 +96,31 @@ namespace Library
         conn.Close();
       }
       return foundBook;
+    }
+
+    public void AddAuthor(Author newAuthor)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO book_authors (author_id, book_id) VALUES (@AuthorId, @BookId);", conn);
+
+      SqlParameter authorIdParameter = new SqlParameter();
+      authorIdParameter.ParameterName = "@BookId";
+      authorIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(authorIdParameter);
+
+      SqlParameter studentIdParameter = new SqlParameter();
+      studentIdParameter.ParameterName = "@AuthorId";
+      studentIdParameter.Value = newAuthor.GetId();
+      cmd.Parameters.Add(studentIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
 
     public List<Author> GetAuthors()

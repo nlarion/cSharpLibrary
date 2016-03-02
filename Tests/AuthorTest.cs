@@ -72,6 +72,35 @@ namespace Library
     }
 
     [Fact]
+    public void Test_Update_UpdatesAuthorObject()
+    {
+      Author testAuthor = new Author("Kanye West");
+      testAuthor.Save();
+
+      testAuthor.Update("Adam West");
+
+      Author afterAuthor = Author.Find(testAuthor.GetId());
+
+      Assert.Equal(afterAuthor.GetAuthor(), "Adam West");
+    }
+
+    [Fact]
+    public void Test_Update_UpdatesAuthorObjectInDB()
+    {
+      Author testAuthor = new Author("Kanye West");
+      testAuthor.Save();
+
+      testAuthor.Update("Adam West");
+
+      Author afterAuthor = Author.Find(testAuthor.GetId());
+
+      Author testAuthor2 = new Author("Adam West", testAuthor.GetId());
+      // Console.WriteLine(afterAuthor.GetId());
+      // Console.WriteLine(testAuthor2.GetId());
+      Assert.Equal(afterAuthor, testAuthor2);
+    }
+
+    [Fact]
     public void Test_AddBooks_AddsBookToAuthor()
     {
       //Arrange

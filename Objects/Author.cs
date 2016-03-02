@@ -44,6 +44,64 @@ namespace Library
     {
       _author = author;
     }
+    public void Update(string author)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("update authors set name=@NewAuthor where id = @AuthorId;", conn);
+
+      SqlParameter newAuthorParameter = new SqlParameter();
+      newAuthorParameter.ParameterName = "@NewAuthor";
+      newAuthorParameter.Value = author;
+      cmd.Parameters.Add(newAuthorParameter);
+
+      SqlParameter authorIdParameter = new SqlParameter();
+      authorIdParameter.ParameterName = "@AuthorId";
+      authorIdParameter.Value = this._id;
+      cmd.Parameters.Add(authorIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+    public static Author Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM authors WHERE id = @AuthorId;", conn);
+
+      SqlParameter AuthorIdParameter = new SqlParameter();
+      AuthorIdParameter.ParameterName = "@AuthorId";
+      AuthorIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(AuthorIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundAuthorId = 0;
+      string foundAuthorTitle = null;
+
+      while(rdr.Read())
+      {
+        foundAuthorId = rdr.GetInt32(0);
+        foundAuthorTitle = rdr.GetString(1);
+      }
+      Author foundAuthor = new Author(foundAuthorTitle, foundAuthorId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundAuthor;
+    }
 
     public void AddBooks(Book newBook)
     {
