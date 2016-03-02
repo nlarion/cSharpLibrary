@@ -45,14 +45,6 @@ namespace Library
     {
       _id = id;
     }
-    // public string GetAuthors()
-    // {
-    //   return _authors;
-    // }
-    // public void SetAuthors(List<Author> authors)
-    // {
-    //   _authors = authors;
-    // }
     public string GetTitle()
     {
       return _title;
@@ -70,7 +62,41 @@ namespace Library
       _dueDate = dueDate;
     }
 
+    public List<Author> GetAuthors()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
 
+      List<Author> authors = new List<Author>{};
+
+      SqlCommand cmd = new SqlCommand("select a.id, a.name from authors a inner join book_authors ba on a.id = ba.author_id inner join books b on b.id = ba.book_id where b.id = @BookId", conn);
+      SqlParameter BookIdParameter = new SqlParameter();
+
+      BookIdParameter.ParameterName = "@BookId";
+      BookIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(BookIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int authorId = rdr.GetInt32(0);
+        string authorName = rdr.GetString(1);
+        Author newAuthor = new Author(authorName, authorId);
+        authors.Add(newAuthor);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return authors;
+    }
 
     public static List<Book> GetAll()
     {

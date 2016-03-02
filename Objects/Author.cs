@@ -45,6 +45,43 @@ namespace Library
       _author = author;
     }
 
+    public List<Book> GetBooks()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      List<Book> books = new List<Book>{};
+
+      SqlCommand cmd = new SqlCommand("select b.id, b.title, b.duedate from books b inner join book_authors ba on b.id = ba.book_id inner join authors a on a.id = ba.author_id where a.id = @AuthorId", conn);
+      SqlParameter AuthorIdParameter = new SqlParameter();
+
+      AuthorIdParameter.ParameterName = "@AuthorId";
+      AuthorIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(AuthorIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookName = rdr.GetString(1);
+        DateTime bookDueDate = rdr.GetDateTime(2);
+        Book newBook = new Book(bookName, bookDueDate, bookId);
+        books.Add(newBook);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return books;
+    }
+
     public static List<Author> GetAll()
     {
       List<Author> allAuthors = new List<Author>{};
@@ -104,8 +141,6 @@ namespace Library
         conn.Close();
       }
     }
-
-
 
     public static void DeleteAll()
     {

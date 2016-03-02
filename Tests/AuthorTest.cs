@@ -50,6 +50,28 @@ namespace Library
     }
 
     [Fact]
+    public void Test_GetBooks_ReturnsAllBooksFromAuthor()
+    {
+      //Arrange
+      Author testAuthor = new Author("Kanye West");
+      testAuthor.Save();
+
+      Book firstBook = new Book("Glow in the Dark", new DateTime(2016, 01, 01));
+      firstBook.Save();
+
+      Book secondBook = new Book("Something", new DateTime(2016, 01, 01));
+      secondBook.Save();
+
+      //Act
+      testAuthor.AddAuthor(testAuthor);
+      List<Book> savedBooks = testAuthor.GetBooks();
+      List<Book> testList = new List<Book> {firstBook};
+
+      //Assert
+      Assert.Equal(testList, savedBooks);
+    }
+
+    [Fact]
     public void Dispose()
     {
       Author.DeleteAll();
