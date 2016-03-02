@@ -45,6 +45,31 @@ namespace Library
       _author = author;
     }
 
+    public void AddBooks(Book newBook)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO book_authors (author_id, book_id) VALUES (@AuthorId, @BookId)", conn);
+
+      SqlParameter authorIdParameter = new SqlParameter();
+      authorIdParameter.ParameterName = "@AuthorId";
+      authorIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(authorIdParameter);
+
+      SqlParameter studentIdParameter = new SqlParameter();
+      studentIdParameter.ParameterName = "@BookId";
+      studentIdParameter.Value = newBook.GetId();
+      cmd.Parameters.Add(studentIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public List<Book> GetBooks()
     {
       SqlConnection conn = DB.Connection();

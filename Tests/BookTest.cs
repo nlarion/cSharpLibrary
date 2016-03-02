@@ -55,7 +55,7 @@ namespace Library
 
 
     [Fact]
-    public void Test_AddBook_AddsBookToAuthor()
+    public void Test_AddAuthor_AddsAuthorToBook()
     {
       //Arrange
       Author testAuthor = new Author("Cindy Crawford", 1);
@@ -68,11 +68,11 @@ namespace Library
       secondBook.Save();
 
       //Act
-      testAuthor.AddBook(firstBook);
-      testAuthor.AddBook(secondBook);
+      firstBook.AddAuthor(testAuthor);
+      secondBook.AddAuthor(testAuthor);
 
-      List<Book> result = testAuthor.GetBooks();
-      List<Book> testList = new List<Book>{firstBook, secondBook};
+      List<Author> result = firstBook.GetAuthors();
+      List<Author> testList = new List<Author>{testAuthor};
 
       //Assert
       Assert.Equal(testList, result);
@@ -92,12 +92,12 @@ namespace Library
       secondBook.Save();
 
       //Act
-      testAuthor.AddBook(firstBook);
-      List<Author> savedAuthors = testAuthor.GetAuthors();
-      List<Author> testList = new List<Author> {firstAuthor};
+      testAuthor.AddBooks(firstBook);
+      List<Author> savedAuthors = firstBook.GetAuthors();
+      List<Author> testList = new List<Author> {testAuthor};
 
       //Assert
-      Assert.Equal(testList, savedBooks);
+      Assert.Equal(testList, savedAuthors);
     }
 
     // [Fact]

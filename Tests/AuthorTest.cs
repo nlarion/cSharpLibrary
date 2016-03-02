@@ -63,12 +63,36 @@ namespace Library
       secondBook.Save();
 
       //Act
-      testAuthor.AddAuthor(testAuthor);
+      testAuthor.AddBooks(firstBook);
       List<Book> savedBooks = testAuthor.GetBooks();
       List<Book> testList = new List<Book> {firstBook};
 
       //Assert
       Assert.Equal(testList, savedBooks);
+    }
+
+    [Fact]
+    public void Test_AddBooks_AddsBookToAuthor()
+    {
+      //Arrange
+      Author testAuthor = new Author("Cindy Crawford", 1);
+      testAuthor.Save();
+
+      Book firstBook = new Book("My Journey", new DateTime(2016, 11, 01));
+      firstBook.Save();
+
+      Book secondBook = new Book("1984", new DateTime(2016, 11, 01));
+      secondBook.Save();
+
+      //Act
+      testAuthor.AddBooks(firstBook);
+      testAuthor.AddBooks(secondBook);
+
+      List<Book> result = testAuthor.GetBooks();
+      List<Book> testList = new List<Book>{firstBook, secondBook};
+
+      //Assert
+      Assert.Equal(testList, result);
     }
 
     [Fact]
