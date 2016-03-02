@@ -227,34 +227,56 @@ namespace Library
     }
 
     public void Update(string title, DateTime dueDate)
-     {
-       SqlConnection conn = DB.Connection();
-       conn.Open();
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-       SqlCommand cmd = new SqlCommand("update books set title=@NewTitle, duedate=@NewDueDate where id = @BookId;", conn);
+      SqlCommand cmd = new SqlCommand("update books set title=@NewTitle, duedate=@NewDueDate where id = @BookId;", conn);
 
-       SqlParameter newTitleParameter = new SqlParameter();
-       newTitleParameter.ParameterName = "@NewTitle";
-       newTitleParameter.Value = title;
-       cmd.Parameters.Add(newTitleParameter);
+      SqlParameter newTitleParameter = new SqlParameter();
+      newTitleParameter.ParameterName = "@NewTitle";
+      newTitleParameter.Value = title;
+      cmd.Parameters.Add(newTitleParameter);
 
-       SqlParameter newDueDateParameter = new SqlParameter();
-       newDueDateParameter.ParameterName = "@NewDueDate";
-       newDueDateParameter.Value = dueDate;
-       cmd.Parameters.Add(newDueDateParameter);
+      SqlParameter newDueDateParameter = new SqlParameter();
+      newDueDateParameter.ParameterName = "@NewDueDate";
+      newDueDateParameter.Value = dueDate;
+      cmd.Parameters.Add(newDueDateParameter);
 
-       SqlParameter bookIdParameter = new SqlParameter();
-       bookIdParameter.ParameterName = "@BookId";
-       bookIdParameter.Value = this._id;
-       cmd.Parameters.Add(bookIdParameter);
+      SqlParameter bookIdParameter = new SqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = this._id;
+      cmd.Parameters.Add(bookIdParameter);
 
-       cmd.ExecuteNonQuery();
+      cmd.ExecuteNonQuery();
 
-       if (conn != null)
-       {
-         conn.Close();
-       }
-     }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("delete from books where id = @BookId; delete from book_authors where book_id = @BookId;", conn);
+
+      SqlParameter bookIdParameter = new SqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = this._id;
+      cmd.Parameters.Add(bookIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+
 
     public static void DeleteAll()
     {

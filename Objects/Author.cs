@@ -225,6 +225,26 @@ namespace Library
       }
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("delete from authors where id = @AuthorId; delete from book_authors where author_id = @AuthorId;", conn);
+
+      SqlParameter authorIdParameter = new SqlParameter();
+      authorIdParameter.ParameterName = "@AuthorId";
+      authorIdParameter.Value = this._id;
+      cmd.Parameters.Add(authorIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

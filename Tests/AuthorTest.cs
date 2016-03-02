@@ -125,6 +125,25 @@ namespace Library
     }
 
     [Fact]
+    public void Test_Delete_DeletesAuthorFromDatabase()
+    {
+      //Arrange
+      Author testAuthor = new Author("Cindy Crawford");
+      testAuthor.Save();
+
+      Author testAuthor2 = new Author("Kanye West");
+      testAuthor2.Save();
+
+      //Act
+      testAuthor.Delete();
+      List<Author> resultList = Author.GetAll();
+      List<Author> testList = new List<Author> {testAuthor2};
+      
+      //Assert
+      Assert.Equal(resultList, testList);
+    }
+
+    [Fact]
     public void Dispose()
     {
       Author.DeleteAll();

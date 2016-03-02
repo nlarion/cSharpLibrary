@@ -144,6 +144,27 @@ namespace Library
       Assert.Equal(testBook, foundBook);
     }
 
+    [Fact]
+    public void Test_Delete_DeletesBookFromDatabase()
+    {
+      //Arrange
+      Book testBook = new Book("1984", new DateTime(1999,01,01));
+      testBook.Save();
+
+      Book testBook2 = new Book("Glow in the Dark", new DateTime(2016,01,01));
+      testBook2.Save();
+
+      //Act
+      testBook.Delete();
+      List<Book> resultList = Book.GetAll();
+      List<Book> testList = new List<Book> {testBook2};
+
+      Console.WriteLine(testBook2.GetTitle());
+      Console.WriteLine(testBook.GetTitle());
+      //Assert
+      Assert.Equal(resultList, testList);
+    }
+
 
     [Fact]
     public void Dispose()
