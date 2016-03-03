@@ -70,36 +70,36 @@ namespace Library
     //   //Assert
     //   Assert.Equal(testList, savedBooks);
     // }
-    //
-    // [Fact]
-    // public void Test_Update_UpdatesAuthorObject()
-    // {
-    //   Author testAuthor = new Author("Kanye West");
-    //   testAuthor.Save();
-    //
-    //   testAuthor.Update("Adam West");
-    //
-    //   Author afterAuthor = Author.Find(testAuthor.GetId());
-    //
-    //   Assert.Equal(afterAuthor.GetAuthor(), "Adam West");
-    // }
-    //
-    // [Fact]
-    // public void Test_Update_UpdatesAuthorObjectInDB()
-    // {
-    //   Author testAuthor = new Author("Kanye West");
-    //   testAuthor.Save();
-    //
-    //   testAuthor.Update("Adam West");
-    //
-    //   Author afterAuthor = Author.Find(testAuthor.GetId());
-    //
-    //   Author testAuthor2 = new Author("Adam West", testAuthor.GetId());
-    //   // Console.WriteLine(afterAuthor.GetId());
-    //   // Console.WriteLine(testAuthor2.GetId());
-    //   Assert.Equal(afterAuthor, testAuthor2);
-    // }
-    //
+
+    [Fact]
+    public void Test_Update_UpdatesPatronObject()
+    {
+      Patron testPatron = new Patron("Kanye West");
+      testPatron.Save();
+
+      testPatron.Update("Adam West");
+
+      Patron afterPatron = Patron.Find(testPatron.GetId());
+
+      Assert.Equal(afterPatron.GetName(), "Adam West");
+    }
+
+    [Fact]
+    public void Test_Update_UpdatesPatronObjectInDB()
+    {
+      Patron testPatron = new Patron("Kanye West");
+      testPatron.Save();
+
+      testPatron.Update("Adam West");
+
+      Patron afterPatron = Patron.Find(testPatron.GetId());
+
+      Patron testPatron2 = new Patron("Adam West", testPatron.GetId());
+      // Console.WriteLine(afterPatron.GetId());
+      // Console.WriteLine(testPatron2.GetId());
+      Assert.Equal(afterPatron, testPatron2);
+    }
+
     // [Fact]
     // public void Test_AddBooks_AddsBookToAuthor()
     // {
@@ -123,26 +123,26 @@ namespace Library
     //   //Assert
     //   Assert.Equal(testList, result);
     // }
-    //
-    // [Fact]
-    // public void Test_Delete_DeletesAuthorFromDatabase()
-    // {
-    //   //Arrange
-    //   Author testAuthor = new Author("Cindy Crawford");
-    //   testAuthor.Save();
-    //
-    //   Author testAuthor2 = new Author("Kanye West");
-    //   testAuthor2.Save();
-    //
-    //   //Act
-    //   testAuthor.Delete();
-    //   List<Author> resultList = Author.GetAll();
-    //   List<Author> testList = new List<Author> {testAuthor2};
-    //
-    //   //Assert
-    //   Assert.Equal(resultList, testList);
-    // }
-    //
+
+    [Fact]
+    public void Test_Delete_DeletesAuthorFromDatabase()
+    {
+      //Arrange
+      Author testAuthor = new Author("Cindy Crawford");
+      testAuthor.Save();
+
+      Author testAuthor2 = new Author("Kanye West");
+      testAuthor2.Save();
+
+      //Act
+      testAuthor.Delete();
+      List<Author> resultList = Author.GetAll();
+      List<Author> testList = new List<Author> {testAuthor2};
+
+      //Assert
+      Assert.Equal(resultList, testList);
+    }
+
     // [Fact]
     // public void Test_SearchByTitle_ReturnsMatchingAuthorObject()
     // {
@@ -155,7 +155,7 @@ namespace Library
     //
     //   Assert.Equal(testList, resultList);
     // }
-    //
+
     [Fact]
     public void Dispose()
     {

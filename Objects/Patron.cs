@@ -105,6 +105,85 @@ namespace Library
       }
     }
 
+    public void Update(string name)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("update patrons set name=@NewName where id = @PatronId;", conn);
+
+      SqlParameter newNameParameter = new SqlParameter();
+      newNameParameter.ParameterName = "@NewName";
+      newNameParameter.Value = name;
+      cmd.Parameters.Add(newNameParameter);
+
+      SqlParameter patronIdParameter = new SqlParameter();
+      patronIdParameter.ParameterName = "@PatronId";
+      patronIdParameter.Value = this._id;
+      cmd.Parameters.Add(patronIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public static Patron Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM patrons WHERE id = @PatronId;", conn);
+
+      SqlParameter PatronIdParameter = new SqlParameter();
+      PatronIdParameter.ParameterName = "@PatronId";
+      PatronIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(PatronIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundPatronId = 0;
+      string foundPatronName = null;
+
+      while(rdr.Read())
+      {
+        foundPatronId = rdr.GetInt32(0);
+        foundPatronName = rdr.GetString(1);
+      }
+      Patron foundPatron = new Patron(foundPatronName, foundPatronId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundPatron;
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("delete from patrons where id = @PatronId; delete from checkouts where patrons_id = @PatronId;", conn);
+      SqlParameter copyIdParameter = new SqlParameter();
+      copyIdParameter.ParameterName = "@PatronId";
+      copyIdParameter.Value = this._id;
+      cmd.Parameters.Add(copyIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
