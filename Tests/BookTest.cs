@@ -159,8 +159,6 @@ namespace Library
       List<Book> resultList = Book.GetAll();
       List<Book> testList = new List<Book> {testBook2};
 
-      Console.WriteLine(testBook2.GetTitle());
-      Console.WriteLine(testBook.GetTitle());
       //Assert
       Assert.Equal(resultList, testList);
     }
