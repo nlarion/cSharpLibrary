@@ -13,15 +13,15 @@ namespace Library
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=library_test;Integrated Security=SSPI;";
     }
 
-    // [Fact]
-    // public void Test_AuthorEmptyAtFirst()
-    // {
-    //   //Arrange, Act
-    //   int result = Author.GetAll().Count;
-    //
-    //   //Assert
-    //   Assert.Equal(0, result);
-    // }
+    [Fact]
+    public void Test_PatronEmptyAtFirst()
+    {
+      //Arrange, Act
+      int result = Patron.GetAll().Count;
+
+      //Assert
+      Assert.Equal(0, result);
+    }
 
     [Fact]
     public void Test_Equal_ReturnsTrueForSameAuthor()

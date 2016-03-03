@@ -45,6 +45,37 @@ namespace Library
       _name = name;
     }
 
+    public static List<Patron> GetAll()
+    {
+      List<Patron> allPatrons = new List<Patron>{};
+
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("select * from patrons", conn);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int PatronId = rdr.GetInt32(0);
+        string PatronName= rdr.GetString(1);
+        Patron newPatron = new Patron(PatronName, PatronId);
+        allPatrons.Add(newPatron);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return allPatrons;
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
