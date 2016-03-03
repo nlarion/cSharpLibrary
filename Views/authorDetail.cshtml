@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <title>The Library</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Authors</h1>
+      <hr />
+      <h2>Authors with their works</h2>
+      @if(Model != null)
+      {
+        <h3>@Model["foundAuthor"].GetAuthor()</h3>
+        <ul>
+          @foreach(var books in Model["authorsBooks"])
+          {
+            <li>@books.GetTitle(), due date @books.GetDueDate().ToString("d")</li>
+          }
+        </ul>
+      }
+    </div>
+  </body>
+</html>

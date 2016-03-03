@@ -39,6 +39,14 @@ namespace Library
         returnDictionary.Add("authorList", authorList);
         return View["author.cshtml", returnDictionary];
       };
+      Get["/Librarian/Author/{id}"]= parameters =>{
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        Author foundAuthor = Author.Find(parameters.id);
+        List<Book> authorsBooks = foundAuthor.GetBooks();
+        returnDictionary.Add("foundAuthor", foundAuthor);
+        returnDictionary.Add("authorsBooks", authorsBooks);
+        return View["authorDetail.cshtml", returnDictionary];
+      };
       Get["/Librarian/Book"]= _ =>{
         Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
         List<Book> bookList = Book.GetAll();
@@ -59,6 +67,7 @@ namespace Library
         returnDictionary.Add("authorList", authorList);
         return View["book.cshtml", returnDictionary];
       };
+
     }
   }
 }
