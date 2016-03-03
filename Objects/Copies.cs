@@ -94,6 +94,43 @@ namespace Library
       return allCopiess;
     }
 
+    public static Copies Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM copies WHERE id = @CopiesId;", conn);
+
+      SqlParameter CopiesIdParameter = new SqlParameter();
+      CopiesIdParameter.ParameterName = "@CopiesId";
+      CopiesIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(CopiesIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundCopiesId = 0;
+      int foundCopiesNumberOf = 0;
+      int foundBookId = 0;
+
+      while(rdr.Read())
+      {
+        foundCopiesId = rdr.GetInt32(0);
+        foundCopiesNumberOf = rdr.GetInt32(1);
+        foundBookId = rdr.GetInt32(2);
+      }
+      Copies foundCopies = new Copies(foundCopiesNumberOf, foundBookId, foundCopiesId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundCopies;
+    }
+
     public void Save()
     {
       SqlConnection conn = DB.Connection();

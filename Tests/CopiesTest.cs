@@ -51,6 +51,38 @@ namespace Library
     }
 
     [Fact]
+    public void Test_Update_UpdatesABookObjectInDB()
+    {
+      Book testBook = new Book("1984", new DateTime(1999,01,01), 1);
+      Copies testCopies = new Copies(12,testBook.GetId());
+      testCopies.Save();
+
+      testCopies.Update(11);
+
+      Copies afterCopies = Copies.Find(testCopies.GetId());
+
+      Copies testCopies2 = new Copies(11,testBook.GetId(),afterCopies.GetId());
+      // Console.WriteLine(afterCopies.GetId());
+      // Console.WriteLine(testCopies2.GetId());
+      Assert.Equal(afterCopies, testCopies2);
+    }
+
+    [Fact]
+    public void Test_Find_FindsCopiesInDB()
+    {
+      //Arrange
+      Book testBook = new Book("1984", new DateTime(1999,01,01), 1);
+      Copies testCopies = new Copies(12,testBook.GetId());
+      testCopies.Save();
+
+      //Act
+      Copies foundCopies = Copies.Find(testCopies.GetId());
+
+      //Assert
+      Assert.Equal(testCopies, foundCopies);
+    }
+
+    [Fact]
     public void Test_Delete_DeletesBookFromDatabase()
     {
       //Arrange
