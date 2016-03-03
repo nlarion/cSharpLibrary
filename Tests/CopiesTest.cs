@@ -50,17 +50,25 @@ namespace Library
       Assert.Equal(testList, result);
     }
 
-    // [Fact]
-    // public void Test_AddCopy_AddCopiesOfABooktoDB()
-    // {
-    //   Book testBook = new Book("Grapes of Wrath", new DateTime(2016,06,01), 1);
-    //
-    //   Copies testCopy = new Copies(3, testBook.GetId(), 1);
-    //
-    //   testBook.AddCopy(testCopy);
-    //
-    //   Assert.Equal()
-    // }
+    [Fact]
+    public void Test_Delete_DeletesBookFromDatabase()
+    {
+      //Arrange
+      Book testBook = new Book("1984", new DateTime(2016,11,01), 1);
+      Copies testCopies = new Copies(12,testBook.GetId());
+      testCopies.Save();
+
+      Copies testCopies2 = new Copies(11,testBook.GetId());
+      testCopies2.Save();
+
+      //Act
+      testCopies.Delete();
+      List<Copies> resultList = Copies.GetAll();
+      List<Copies> testList = new List<Copies> {testCopies2};
+
+      //Assert
+      Assert.Equal(resultList, testList);
+    }
 
     [Fact]
     public void Dispose()

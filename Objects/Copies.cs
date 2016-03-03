@@ -128,6 +128,51 @@ namespace Library
       }
     }
 
+    public void Update(int numberOf)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("update copies set number_of=@NewNumberOf where id = @CopyId;", conn);
+
+      SqlParameter newNumberOfParameter = new SqlParameter();
+      newNumberOfParameter.ParameterName = "@NewNumberOf";
+      newNumberOfParameter.Value = numberOf;
+      cmd.Parameters.Add(newNumberOfParameter);
+
+      SqlParameter bookIdParameter = new SqlParameter();
+      bookIdParameter.ParameterName = "@CopyId";
+      bookIdParameter.Value = this._id;
+      cmd.Parameters.Add(bookIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("delete from copies where id = @CopyId; delete from checkouts where copies_id = @CopyId;", conn);
+      SqlParameter copyIdParameter = new SqlParameter();
+      copyIdParameter.ParameterName = "@CopyId";
+      copyIdParameter.Value = this._id;
+      cmd.Parameters.Add(copyIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+
 
     public static void DeleteAll()
     {
