@@ -110,7 +110,7 @@ namespace Library
 
       SqlParameter titleSearchParameter = new SqlParameter();
       titleSearchParameter.ParameterName = "@SearchTitle";
-      titleSearchParameter.Value = title;
+      titleSearchParameter.Value = "%" + title + "%";
       cmd.Parameters.Add(titleSearchParameter);
 
       rdr = cmd.ExecuteReader();

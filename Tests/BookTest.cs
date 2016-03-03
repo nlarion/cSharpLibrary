@@ -168,12 +168,12 @@ namespace Library
     [Fact]
     public void Test_SearchByTitle_ReturnsMatchingBookObject()
     {
-      Book testBook = new Book("1984", new DateTime(1999,01,01));
+      Book testBook = new Book("Where the Grass Grows", new DateTime(1999,01,01));
       testBook.Save();
 
       List<Book> testList = new List<Book> {testBook};
 
-      List<Book> resultList = Book.Search("1984");
+      List<Book> resultList = Book.Search("Where");
 
       Assert.Equal(testList, resultList);
     }
