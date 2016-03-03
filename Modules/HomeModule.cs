@@ -77,6 +77,16 @@ namespace Library
         returnDictionary.Add("authorList", authorList);
         return View["book.cshtml", returnDictionary];
       };
+      Post["/Librarian/Book/{id}"]= parameters =>{
+        Book foundBook = Book.Find(parameters.id);
+        DateTime dueDate = Convert.ToDateTime((string) Request.Form["due-date"]);
+        foundBook.Update(Request.Form["book-name"], dueDate);
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        List<Author> foundAuthors = foundBook.GetAuthors();
+        returnDictionary.Add("foundAuthors", foundAuthors);
+        returnDictionary.Add("foundBook", foundBook);
+        return View["bookDetail.cshtml", returnDictionary];
+      };
       Get["/Librarian/Book/{id}"]= parameters =>{
         Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
         Book foundBook = Book.Find(parameters.id);

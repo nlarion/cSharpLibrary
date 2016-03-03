@@ -327,6 +327,9 @@ namespace Library
 
       cmd.ExecuteNonQuery();
 
+      this._dueDate = dueDate;
+      this._title = title;
+
       if (conn != null)
       {
         conn.Close();

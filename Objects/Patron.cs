@@ -124,6 +124,8 @@ namespace Library
 
       cmd.ExecuteNonQuery();
 
+      this._name = name;
+
       if (conn != null)
       {
         conn.Close();

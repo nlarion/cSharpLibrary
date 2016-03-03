@@ -11,6 +11,18 @@
       <h1>Books</h1>
       <hr />
       <h2>Books</h2>
+      <h3>Edit a book</h3>
+      @if(Model != null)
+      {
+        <form action="/Librarian/Book/@Model["foundBook"].GetId()" method="post">
+          <label>Change Book Name: </label>
+          <input type="text" name="book-name" value="@Model["foundBook"].GetTitle()">
+          <label>Change Due Date: </label>
+          <input type="date" name="due-date">
+          <button class="btn btn-success" type="submit" name="button">Submit</button>
+        </form>
+      }
+
       @if(Model != null)
       {
         <h3>@Model["foundBook"].GetTitle()</h3>

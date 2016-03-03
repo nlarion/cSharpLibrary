@@ -63,6 +63,8 @@ namespace Library
 
       cmd.ExecuteNonQuery();
 
+      this._author = author;
+
       if (conn != null)
       {
         conn.Close();

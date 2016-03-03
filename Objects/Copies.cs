@@ -184,6 +184,8 @@ namespace Library
 
       cmd.ExecuteNonQuery();
 
+      this._numberOf = numberOf;
+
       if (conn != null)
       {
         conn.Close();
