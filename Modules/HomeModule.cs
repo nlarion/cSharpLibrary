@@ -19,6 +19,26 @@ namespace Library
         List<Book> resultList = Book.Search(Request.Form["title"]);
         return View["librarian.cshtml",resultList];
       };
+      Get["/Librarian/Author"]= _ =>{
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        List<Book> bookList = Book.GetAll();
+        List<Author> authorList = Author.GetAll();
+        returnDictionary.Add("bookList", bookList);
+        returnDictionary.Add("authorList", authorList);
+        return View["author.cshtml", returnDictionary];
+      };
+      Post["/Librarian/Author"]= _ =>{
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        Author newAuthor = new Author(Request.Form["author-name"]);
+        Book newBook = Book.Find(Request.Form["book-name"]);
+        newAuthor.Save();
+        newBook.AddAuthor(newAuthor);
+        List<Book> bookList = Book.GetAll();
+        List<Author> authorList = Author.GetAll();
+        returnDictionary.Add("bookList", bookList);
+        returnDictionary.Add("authorList", authorList);
+        return View["author.cshtml", returnDictionary];
+      };
     }
   }
 }
