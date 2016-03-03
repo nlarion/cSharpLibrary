@@ -8,19 +8,19 @@
   </head>
   <body>
     <div class="container">
-      <h1>Authors</h1>
+      <h1>Books</h1>
       <hr />
-      <h2>Add an author for a book</h2>
-      <form action="/Librarian/Author" method="post">
-        <label>Author Name: </label>
+      <h2>Add a New Book maybe..</h2>
+      <form action="/Librarian/Book" method="post">
+        <label>Book Name: </label>
         <input type="text" name="author-name">
-        <label>For Book: </label>
+        <label>Author: </label>
         <select name="book-name" type="text">
-          @if (Model["bookList"].Count > 0 )
+          @if (Model["authorList"].Count > 0 )
           {
-            @foreach (var book in @Model["bookList"])
+            @foreach (var author in @Model["authorList"])
             {
-              <option value="@book.GetId()">@book.GetTitle()</option>
+              <option value="@author.GetId()">@author.GetAuthor()</option>
             }
           }
 
@@ -28,21 +28,21 @@
         <button type="submit">ADD</button>
       </form>
       <hr />
-      <h2>Author List</h2>
+      <h2>Book List</h2>
 
         @if(Model != null)
         {
           <ul>
-            @foreach(var author in Model["authorList"])
+            @foreach(var book in Model["bookList"])
             {
-              <li>@author.GetAuthor()</li>
-              @if(author.GetBooks() != null)
+              <li>@book.GetTitle()</li>
+              @if(book.GetAuthors() != null)
               {
                 <ul>
-                  @foreach(var book in author.GetBooks())
+                  @foreach(var author in book.GetAuthors())
                   {
                     <li>
-                      @book.GetTitle()
+                      @author.GetAuthor()
                     </li>
                   }
                 </ul>
