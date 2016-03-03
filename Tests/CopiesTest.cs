@@ -37,6 +37,32 @@ namespace Library
     }
 
     [Fact]
+    public void Test_Save_SavesCopiesOfBookToDatabase()
+    {
+      Book testBook = new Book("1984", new DateTime(2016,11,01), 1);
+
+      Copies testCopy = new Copies(2, testBook.GetId(), 1);
+      testCopy.Save();
+
+      List<Copies> result = Copies.GetAll();
+      List<Copies> testList = new List<Copies>{testCopy};
+
+      Assert.Equal(testList, result);
+    }
+
+    // [Fact]
+    // public void Test_AddCopy_AddCopiesOfABooktoDB()
+    // {
+    //   Book testBook = new Book("Grapes of Wrath", new DateTime(2016,06,01), 1);
+    //
+    //   Copies testCopy = new Copies(3, testBook.GetId(), 1);
+    //
+    //   testBook.AddCopy(testCopy);
+    //
+    //   Assert.Equal()
+    // }
+
+    [Fact]
     public void Dispose()
     {
       Copies.DeleteAll();

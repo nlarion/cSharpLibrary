@@ -94,6 +94,41 @@ namespace Library
       return allCopiess;
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO copies (number_of, book_id) OUTPUT INSERTED.id VALUES (@NumberOf, @BookId );", conn);
+
+      SqlParameter numberOfParameter = new SqlParameter();
+      numberOfParameter.ParameterName = "@NumberOf";
+      numberOfParameter.Value = this.GetNumber();
+      cmd.Parameters.Add(numberOfParameter);
+
+      SqlParameter bookIdParameter = new SqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = this.GetBookId();
+      cmd.Parameters.Add(bookIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
