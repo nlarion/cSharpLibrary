@@ -184,11 +184,30 @@ namespace Library
       Book testBook = new Book("Where the Grass Grows", new DateTime(2016,02,14));
       testBook.Save();
 
-      List<Book> testList = new List<Book> {testBook};
+      Book testBook2 = new Book("1984", new DateTime(2016,01,14));
+      testBook2.Save();
+
+      List<Book> testList = new List<Book> {testBook, testBook2};
 
       List<Book> resultList = Book.OverDueBooks();
 
       Assert.Equal(testList, resultList);
+    }
+
+    [Fact]
+    public void Test_OverDueBooks_ReturnsBooksPastDueDateCount()
+    {
+      Book testBook = new Book("Where the Grass Grows", new DateTime(2016,02,14));
+      testBook.Save();
+
+      Book testBook2 = new Book("1984", new DateTime(2020,01,14));
+      testBook2.Save();
+
+      List<Book> testList = new List<Book> {testBook, testBook2};
+
+      List<Book> resultList = Book.OverDueBooks();
+
+      Assert.Equal(1, resultList.Count);
     }
 
     [Fact]

@@ -146,10 +146,10 @@ namespace Library
 
       SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE duedate < @TodaysDate;", conn);
 
-      SqlParameter titleSearchParameter = new SqlParameter();
-      titleSearchParameter.ParameterName = "@SearchTitle";
-      titleSearchParameter.Value = "%" + title + "%";
-      cmd.Parameters.Add(titleSearchParameter);
+      SqlParameter dueDateParameter = new SqlParameter();
+      dueDateParameter.ParameterName = "@TodaysDate";
+      dueDateParameter.Value = (string) DateTime.Now.ToString("yyyy-MM-dd");
+      cmd.Parameters.Add(dueDateParameter);
 
       rdr = cmd.ExecuteReader();
 
