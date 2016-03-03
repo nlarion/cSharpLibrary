@@ -35,7 +35,7 @@
           <ul>
             @foreach(var book in Model["bookList"])
             {
-              <li>@book.GetTitle()</li>
+              <li><a href="/Librarian/Book/@book.GetId()">@book.GetTitle()</a></li>
               @if(book.GetAuthors() != null)
               {
                 <ul>

@@ -47,6 +47,16 @@ namespace Library
         returnDictionary.Add("authorsBooks", authorsBooks);
         return View["authorDetail.cshtml", returnDictionary];
       };
+      Get["/Librarian/Author/Delete/{id}"]= parameters =>{
+        Author foundAuthor = Author.Find(parameters.id);
+        foundAuthor.Delete();
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        List<Book> bookList = Book.GetAll();
+        List<Author> authorList = Author.GetAll();
+        returnDictionary.Add("bookList", bookList);
+        returnDictionary.Add("authorList", authorList);
+        return View["author.cshtml", returnDictionary];
+      };
       Get["/Librarian/Book"]= _ =>{
         Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
         List<Book> bookList = Book.GetAll();
@@ -67,7 +77,24 @@ namespace Library
         returnDictionary.Add("authorList", authorList);
         return View["book.cshtml", returnDictionary];
       };
-
+      Get["/Librarian/Book/{id}"]= parameters =>{
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        Book foundBook = Book.Find(parameters.id);
+        List<Author> foundAuthors = foundBook.GetAuthors();
+        returnDictionary.Add("foundAuthors", foundAuthors);
+        returnDictionary.Add("foundBook", foundBook);
+        return View["bookDetail.cshtml", returnDictionary];
+      };
+      Get["/Librarian/Book/Delete/{id}"]= parameters =>{
+        Book foundBook = Book.Find(parameters.id);
+        foundBook.Delete();
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        List<Book> bookList = Book.GetAll();
+        List<Author> authorList = Author.GetAll();
+        returnDictionary.Add("bookList", bookList);
+        returnDictionary.Add("authorList", authorList);
+        return View["book.cshtml", returnDictionary];
+      };
     }
   }
 }

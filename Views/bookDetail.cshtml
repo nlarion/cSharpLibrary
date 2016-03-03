@@ -8,20 +8,20 @@
   </head>
   <body>
     <div class="container">
-      <h1>Authors</h1>
+      <h1>Books</h1>
       <hr />
-      <h2>Authors with their works</h2>
+      <h2>Books</h2>
       @if(Model != null)
       {
-        <h3>@Model["foundAuthor"].GetAuthor()</h3>
+        <h3>@Model["foundBook"].GetTitle()</h3>
         <ul>
-          @foreach(var books in Model["authorsBooks"])
+          @foreach(var authors in Model["foundAuthors"])
           {
-            <li>@books.GetTitle(), due date @books.GetDueDate().ToString("d")</li>
+            <li>@authors.GetAuthor()</li>
           }
         </ul>
       }
-      <a href="/Librarian/Author/Delete/@Model["foundAuthor"].GetId()">Delete This Author</a>
+      <a href="/Librarian/Book/Delete/@Model["foundBook"].GetId()">Delete This Book</a>
     </div>
   </body>
 </html>
