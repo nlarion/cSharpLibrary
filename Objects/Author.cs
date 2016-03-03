@@ -68,6 +68,43 @@ namespace Library
         conn.Close();
       }
     }
+    public static List<Author> Search(string name)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      List<Author> searchResults = new List<Author>{};
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM authors WHERE name LIKE @SearchName;", conn);
+
+      SqlParameter nameSearchParameter = new SqlParameter();
+      nameSearchParameter.ParameterName = "@SearchName";
+      nameSearchParameter.Value = "%" + name + "%";
+      cmd.Parameters.Add(nameSearchParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int AuthorId = rdr.GetInt32(0);
+        string AuthorName= rdr.GetString(1);
+        //need method to return authors here
+        Author newAuthor = new Author(AuthorName, AuthorId);
+        searchResults.Add(newAuthor);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return searchResults;
+    }
+
     public static Author Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -83,14 +120,14 @@ namespace Library
       rdr = cmd.ExecuteReader();
 
       int foundAuthorId = 0;
-      string foundAuthorTitle = null;
+      string foundAuthorName = null;
 
       while(rdr.Read())
       {
         foundAuthorId = rdr.GetInt32(0);
-        foundAuthorTitle = rdr.GetString(1);
+        foundAuthorName = rdr.GetString(1);
       }
-      Author foundAuthor = new Author(foundAuthorTitle, foundAuthorId);
+      Author foundAuthor = new Author(foundAuthorName, foundAuthorId);
 
       if (rdr != null)
       {

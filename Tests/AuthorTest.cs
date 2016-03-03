@@ -138,9 +138,22 @@ namespace Library
       testAuthor.Delete();
       List<Author> resultList = Author.GetAll();
       List<Author> testList = new List<Author> {testAuthor2};
-      
+
       //Assert
       Assert.Equal(resultList, testList);
+    }
+
+    [Fact]
+    public void Test_SearchByTitle_ReturnsMatchingAuthorObject()
+    {
+      Author testAuthor = new Author("Tom Clancy");
+      testAuthor.Save();
+
+      List<Author> testList = new List<Author> {testAuthor};
+
+      List<Author> resultList = Author.Search("Tom");
+
+      Assert.Equal(testList, resultList);
     }
 
     [Fact]

@@ -178,7 +178,6 @@ namespace Library
       Assert.Equal(testList, resultList);
     }
 
-
     [Fact]
     public void Dispose()
     {
