@@ -47,6 +47,16 @@ namespace Library
         returnDictionary.Add("authorsBooks", authorsBooks);
         return View["authorDetail.cshtml", returnDictionary];
       };
+      Post["/Librarian/Author/{id}"]= parameters =>{
+
+        Author foundAuthor = Author.Find(parameters.id);
+        foundAuthor.Update(Request.Form["author-name"]);
+        Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
+        List<Book> authorsBooks = foundAuthor.GetBooks();
+        returnDictionary.Add("foundAuthor", foundAuthor);
+        returnDictionary.Add("authorsBooks", authorsBooks);
+        return View["authorDetail.cshtml", returnDictionary];
+      };
       Get["/Librarian/Author/Delete/{id}"]= parameters =>{
         Author foundAuthor = Author.Find(parameters.id);
         foundAuthor.Delete();

@@ -10,6 +10,15 @@
     <div class="container">
       <h1>Authors</h1>
       <hr />
+      <h3>Edit a author</h3>
+      @if(Model != null)
+      {
+        <form action="/Librarian/Author/@Model["foundAuthor"].GetId()" method="post">
+          <label>Change author Name: </label>
+          <input type="text" name="author-name" value="@Model["foundAuthor"].GetAuthor()">
+          <button class="btn btn-success" type="submit" name="button">Submit</button>
+        </form>
+      }
       <h2>Authors with their works</h2>
       @if(Model != null)
       {
