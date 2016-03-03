@@ -34,23 +34,23 @@ namespace Library
       Assert.Equal(testAuthor, secondAuthor);
     }
 
+    [Fact]
+    public void Test_Save_SavesPatronToDatabase()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Harry Harrison", 1);
+      testPatron.Save();
+
+      //Act
+      List<Patron> result = Patron.GetAll();
+      List<Patron> testList = new List<Patron>{testPatron};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+    //
     // [Fact]
-    // public void Test_Save_SavesAuthorToDatabase()
-    // {
-    //   //Arrange
-    //   Author testAuthor = new Author("George Orwell", 1);
-    //   testAuthor.Save();
-    //
-    //   //Act
-    //   List<Author> result = Author.GetAll();
-    //   List<Author> testList = new List<Author>{testAuthor};
-    //
-    //   //Assert
-    //   Assert.Equal(testList, result);
-    // }
-    //
-    // [Fact]
-    // public void Test_GetBooks_ReturnsAllBooksFromAuthor()
+    // public void Test_GetBooks_ReturnsAllBooksFromPatron()
     // {
     //   //Arrange
     //   Author testAuthor = new Author("Kanye West");
