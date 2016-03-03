@@ -165,6 +165,19 @@ namespace Library
       Assert.Equal(resultList, testList);
     }
 
+    [Fact]
+    public void Test_SearchByTitle_ReturnsMatchingBookObject()
+    {
+      Book testBook = new Book("1984", new DateTime(1999,01,01));
+      testBook.Save();
+
+      List<Book> testList = new List<Book> {testBook};
+
+      List<Book> resultList = Book.Search("1984");
+
+      Assert.Equal(testList, resultList);
+    }
+
 
     [Fact]
     public void Dispose()
