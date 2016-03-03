@@ -103,11 +103,61 @@ namespace Library
     }
 
     [Fact]
+    public void Test_AddPatron_AddsPatronToCheckouts()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Ryan Smith", 1);
+      testPatron.Save();
+
+      Patron testPatron2 = new Patron("Ryan Renoylds", 1);
+      testPatron2.Save();
+
+      Book testBook = new Book ("1984", new DateTime(1999,01,01), 1);
+      testBook.Save();
+
+      Copies testCopies = new Copies (1, testBook.GetId(), 1);
+      testCopies.Save();
+
+      //Act
+      testCopies.AddPatron(testPatron);
+      testCopies.AddPatron(testPatron2);
+
+      List<Patron> result = testCopies.GetPatron();
+      List<Patron> testList = new List<Patron>{testPatron, testPatron2};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void Test_GetPatron_ReturnsAllPatronFromCheckouts()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Kanye West");
+      testPatron.Save();
+
+      Book testBook = new Book ("1984", new DateTime(1999,01,01), 1);
+      testBook.Save();
+
+      Copies testCopy = new Copies (2, testBook.GetId(), 1);
+      testCopy.Save();
+
+      //Act
+      testCopy.AddPatron(testPatron);
+
+      List<Patron> savedPatron = testCopy.GetPatron();
+      List<Patron> testList = new List<Patron> {testPatron};
+
+      //Assert
+      Assert.Equal(testList, savedPatron);
+    }
+
+    [Fact]
     public void Dispose()
     {
       Patron.DeleteAll();
       Copies.DeleteAll();
-      // Book.DeleteAll();
+      Book.DeleteAll();
       // Author.DeleteAll();
     }
   }

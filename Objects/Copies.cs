@@ -209,14 +209,73 @@ namespace Library
       }
     }
 
-
-
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
       SqlCommand cmd = new SqlCommand("DELETE FROM copies;", conn);
       cmd.ExecuteNonQuery();
+    }
+
+    public void AddPatron(Patron newPatron)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO checkouts (patron_id, copies_id) VALUES (@PatronId, @CopiesId)", conn);
+
+      SqlParameter patronIdParameter = new SqlParameter();
+      patronIdParameter.ParameterName = "@PatronId";
+      patronIdParameter.Value = newPatron.GetId();
+      cmd.Parameters.Add(patronIdParameter);
+
+      SqlParameter copyIdParameter = new SqlParameter();
+      copyIdParameter.ParameterName = "@CopiesId";
+      copyIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(copyIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public List<Patron> GetPatron()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      List<Patron> patrons = new List<Patron>{};
+
+      SqlCommand cmd = new SqlCommand("select p.id, p.name from patrons p inner join checkouts co on p.id = co.patron_id inner join copies c on c.id = co.copies_id where c.id = @CopiesId", conn);
+
+      SqlParameter copiesIdParameter = new SqlParameter();
+      copiesIdParameter.ParameterName = "@CopiesId";
+      copiesIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(copiesIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int patronId = rdr.GetInt32(0);
+        string patronName = rdr.GetString(1);
+        Patron newPatron = new Patron(patronName, patronId);
+        patrons.Add(newPatron);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return patrons;
     }
 
 

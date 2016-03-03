@@ -151,19 +151,6 @@ namespace Library
       Assert.Equal(resultList, testList);
     }
 
-    // [Fact]
-    // public void Test_SearchByTitle_ReturnsMatchingAuthorObject()
-    // {
-    //   Author testAuthor = new Author("Tom Clancy");
-    //   testAuthor.Save();
-    //
-    //   List<Author> testList = new List<Author> {testAuthor};
-    //
-    //   List<Author> resultList = Author.Search("Tom");
-    //
-    //   Assert.Equal(testList, resultList);
-    // }
-
     [Fact]
     public void Dispose()
     {
