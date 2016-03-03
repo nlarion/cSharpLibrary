@@ -179,6 +179,19 @@ namespace Library
     }
 
     [Fact]
+    public void Test_OverDueBooks_ReturnsBooksPastDueDate()
+    {
+      Book testBook = new Book("Where the Grass Grows", new DateTime(2016,02,14));
+      testBook.Save();
+
+      List<Book> testList = new List<Book> {testBook};
+
+      List<Book> resultList = Book.OverDueBooks();
+
+      Assert.Equal(testList, resultList);
+    }
+
+    [Fact]
     public void Dispose()
     {
       Book.DeleteAll();

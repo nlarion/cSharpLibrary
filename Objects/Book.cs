@@ -136,6 +136,45 @@ namespace Library
       return searchResults;
     }
 
+    public static List<Book> OverDueBooks()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      List<Book> searchResults = new List<Book>{};
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE duedate < @TodaysDate;", conn);
+
+      SqlParameter titleSearchParameter = new SqlParameter();
+      titleSearchParameter.ParameterName = "@SearchTitle";
+      titleSearchParameter.Value = "%" + title + "%";
+      cmd.Parameters.Add(titleSearchParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int BookId = rdr.GetInt32(0);
+        string BookTitle= rdr.GetString(1);
+        DateTime BookDueDate = rdr.GetDateTime(2);
+        //need method to return authors here
+        Book newBook = new Book(BookTitle, BookDueDate, BookId);
+        searchResults.Add(newBook);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return searchResults;
+    }
+
+
     public void AddAuthor(Author newAuthor)
     {
       SqlConnection conn = DB.Connection();
