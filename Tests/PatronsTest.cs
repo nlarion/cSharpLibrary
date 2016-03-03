@@ -48,28 +48,7 @@ namespace Library
       //Assert
       Assert.Equal(testList, result);
     }
-    //
-    // [Fact]
-    // public void Test_GetBooks_ReturnsAllBooksFromPatron()
-    // {
-    //   //Arrange
-    //   Author testAuthor = new Author("Kanye West");
-    //   testAuthor.Save();
-    //
-    //   Book firstBook = new Book("Glow in the Dark", new DateTime(2016, 01, 01));
-    //   firstBook.Save();
-    //
-    //   Book secondBook = new Book("Something", new DateTime(2016, 01, 01));
-    //   secondBook.Save();
-    //
-    //   //Act
-    //   testAuthor.AddBooks(firstBook);
-    //   List<Book> savedBooks = testAuthor.GetBooks();
-    //   List<Book> testList = new List<Book> {firstBook};
-    //
-    //   //Assert
-    //   Assert.Equal(testList, savedBooks);
-    // }
+
 
     [Fact]
     public void Test_Update_UpdatesPatronObject()
@@ -100,29 +79,58 @@ namespace Library
       Assert.Equal(afterPatron, testPatron2);
     }
 
-    // [Fact]
-    // public void Test_AddBooks_AddsBookToAuthor()
-    // {
-    //   //Arrange
-    //   Author testAuthor = new Author("Cindy Crawford", 1);
-    //   testAuthor.Save();
-    //
-    //   Book firstBook = new Book("My Journey", new DateTime(2016, 11, 01));
-    //   firstBook.Save();
-    //
-    //   Book secondBook = new Book("1984", new DateTime(2016, 11, 01));
-    //   secondBook.Save();
-    //
-    //   //Act
-    //   testAuthor.AddBooks(firstBook);
-    //   testAuthor.AddBooks(secondBook);
-    //
-    //   List<Book> result = testAuthor.GetBooks();
-    //   List<Book> testList = new List<Book>{firstBook, secondBook};
-    //
-    //   //Assert
-    //   Assert.Equal(testList, result);
-    // }
+    [Fact]
+    public void Test_AddCopies_AddsCopiesToCheckouts()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Ryan Smith", 1);
+      testPatron.Save();
+
+      Book testBook = new Book ("1984", new DateTime(1999,01,01), 1);
+      testBook.Save();
+
+      Book testBook2 = new Book("Magic", new DateTime(2016, 11, 01));
+      testBook2.Save();
+
+      Copies testCopy = new Copies (2, testBook.GetId(), 1);
+      testCopy.Save();
+
+      Copies testCopy2 = new Copies (6, testBook2.GetId(), 2);
+      testCopy2.Save();
+
+      //Act
+      testPatron.AddCopies(testCopy);
+      testPatron.AddCopies(testCopy2);
+
+      List<Copies> result = testPatron.GetCopies();
+      List<Copies> testList = new List<Copies>{testCopy, testCopy2};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void Test_GetCopies_ReturnsAllCopiesFromPatron()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Kanye West");
+      testPatron.Save();
+
+      Book testBook = new Book ("1984", new DateTime(1999,01,01), 1);
+      testBook.Save();
+
+      Copies testCopy = new Copies (2, testBook.GetId(), 1);
+      testCopy.Save();
+
+      //Act
+      testPatron.AddCopies(testCopy);
+
+      List<Copies> savedCopies = testPatron.GetCopies();
+      List<Copies> testList = new List<Copies> {testCopy};
+
+      //Assert
+      Assert.Equal(testList, savedCopies);
+    }
 
     [Fact]
     public void Test_Delete_DeletesAuthorFromDatabase()
@@ -160,8 +168,9 @@ namespace Library
     public void Dispose()
     {
       Patron.DeleteAll();
+      Copies.DeleteAll();
+      Book.DeleteAll();
       // Author.DeleteAll();
-      // Book.DeleteAll();
     }
 
   }

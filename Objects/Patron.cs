@@ -165,6 +165,68 @@ namespace Library
       return foundPatron;
     }
 
+    public void AddCopies(Copies newCopy)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO checkouts (patron_id, copies_id) VALUES (@PatronId, @CopyId)", conn);
+
+      SqlParameter patronIdParameter = new SqlParameter();
+      patronIdParameter.ParameterName = "@PatronId";
+      patronIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(patronIdParameter);
+
+      SqlParameter copyIdParameter = new SqlParameter();
+      copyIdParameter.ParameterName = "@CopyId";
+      copyIdParameter.Value = newCopy.GetId();
+      cmd.Parameters.Add(copyIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public List<Copies> GetCopies()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      List<Copies> copies = new List<Copies>{};
+
+      SqlCommand cmd = new SqlCommand("select c.id, c.number_of, c.book_id from copies c inner join checkouts co on c.id = co.copies_id inner join patrons p on p.id = co.patron_id where p.id = @PatronId", conn);
+
+      SqlParameter patronIdParameter = new SqlParameter();
+      patronIdParameter.ParameterName = "@PatronId";
+      patronIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(patronIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int copyId = rdr.GetInt32(0);
+        int copyNumberOf = rdr.GetInt32(1);
+        int copyBookId = rdr.GetInt32(2);
+        Copies newCopy = new Copies(copyNumberOf, copyBookId, copyId);
+        copies.Add(newCopy);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return copies;
+    }
+
     public void Delete()
     {
       SqlConnection conn = DB.Connection();

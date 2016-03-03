@@ -211,6 +211,8 @@ namespace Library
     [Fact]
     public void Dispose()
     {
+      // Patron.DeleteAll();
+      // Copies.DeleteAll();
       Book.DeleteAll();
       Author.DeleteAll();
     }
