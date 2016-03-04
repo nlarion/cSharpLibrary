@@ -30,9 +30,12 @@ namespace Library
       Post["/Librarian/Author"]= _ =>{
         Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
         Author newAuthor = new Author(Request.Form["author-name"]);
-        Book newBook = Book.Find(Request.Form["book-name"]);
+        if(Request.Form["book-name"] != null)
+        {
+          Book newBook = Book.Find(Request.Form["book-name"]);
+          newBook.AddAuthor(newAuthor);
+        }
         newAuthor.Save();
-        newBook.AddAuthor(newAuthor);
         List<Book> bookList = Book.GetAll();
         List<Author> authorList = Author.GetAll();
         returnDictionary.Add("bookList", bookList);
@@ -77,10 +80,14 @@ namespace Library
       };
       Post["/Librarian/Book"]= _ =>{
         Dictionary<string, object> returnDictionary = new Dictionary<string, object> ();
-        Author newAuthor = new Author(Request.Form["author-name"]);
-        Book newBook = Book.Find(Request.Form["book-name"]);
-        newAuthor.Save();
-        newBook.AddAuthor(newAuthor);
+        DateTime dueDate = Convert.ToDateTime((string) Request.Form["due-date"]);
+        Book newBook = new Book(Request.Form["book-name"],dueDate);
+        newBook.Save();
+        if(Request.Form["author-name"] != null)
+        {
+          Author newAuthor = Author.Find(Request.Form["author-name"]);
+          newAuthor.AddBooks(newBook);
+        }
         List<Book> bookList = Book.GetAll();
         List<Author> authorList = Author.GetAll();
         returnDictionary.Add("bookList", bookList);
